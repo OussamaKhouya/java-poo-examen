@@ -26,10 +26,11 @@ public class RepasDAO {
                 repas.setId(rs.getInt("id"));
                 repas.setNom(rs.getString("nom"));
                 int platPrincipalId = rs.getInt("platPrincipalId");
-//                PlatPrincipal platPrincipal = findPlatPrincipalById(platPrincipalId);
+                PlatPrincipal platPrincipal = PlatPrincipalDAO.findById(platPrincipalId);
 //                List<Ingredient> ingredients = findIngredientsByRepasId(repasId);
 //                List<Supplement> supplements = findSupplementsByRepasId(repasId);
                 System.out.println(repas);
+                System.out.println(platPrincipal);
                 repasList.add(repas);
             }
         }

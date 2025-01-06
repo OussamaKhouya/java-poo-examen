@@ -1,5 +1,6 @@
 package site.khouya.exam.metier;
 
+import site.khouya.exam.model.Ingredient;
 import site.khouya.exam.model.PlatPrincipal;
 import site.khouya.exam.model.PlatPrincipalIngredient;
 
@@ -15,9 +16,9 @@ import java.util.List;
 
 public class PlatPrincipalDAO {
 
-    private final Connection connection = SingletonConnexionDB.getConnexion();
+    private static final Connection connection = SingletonConnexionDB.getConnexion();
 
-    public PlatPrincipal findById(int id) throws SQLException {
+    public static PlatPrincipal findById(int id) throws SQLException {
         PlatPrincipal platPrincipal = null;
         String selectPlatPrincipalSQL = "SELECT * FROM platprincipal WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(selectPlatPrincipalSQL)) {
@@ -27,15 +28,31 @@ public class PlatPrincipalDAO {
                     platPrincipal = new PlatPrincipal();
                     platPrincipal.setId(rs.getInt("id"));
                     platPrincipal.setNom(rs.getString("nom"));
-                    List<PlatPrincipalIngredient> ingredients = findIngredientsByPlatPrincipalId(id);
+                    platPrincipal.setIngredients(findIngredientsByPlatPrincipalId(id));
                 }
             }
         }
         return platPrincipal;
     }
 
-    private List<PlatPrincipalIngredient> findIngredientsByPlatPrincipalId(int id) {
+    private static List<PlatPrincipalIngredient> findIngredientsByPlatPrincipalId(int id) throws SQLException {
         List<PlatPrincipalIngredient> ingredients = new ArrayList<>();
-        String selectPlatPrincipalIngredientSQL = "SELECT * FROM platprincipal WHERE id = ?";
+        String sql = "select * from platprincipal_ingredient pi, ingredient ing where pi.ingredientId = ing.id and pi.platPrincipalId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                PlatPrincipal platPrincipal = new PlatPrincipal();
+
+                if (rs.next()) {
+                    Ingredient ingredient = new Ingredient();
+                    ingredient.setId(rs.getInt("id"));
+                    ingredient.setNom(rs.getString("nom"));
+                    ingredient.setPrix(rs.getDouble("prix"));
+
+                    ingredients.add(ingredient);
+                }
+            }
+        }
+        return ingredients;
     }
 }
