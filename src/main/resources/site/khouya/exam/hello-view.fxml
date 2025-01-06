@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="site.khouya.exam.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<AnchorPane prefHeight="420.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="site.khouya.exam.controller.HelloController">
+   <children>
+      <TabPane fx:id="tabs" prefHeight="420.0" prefWidth="749.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+            <Tab fx:id="repasTab" text="Sélectionner un repas">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="391.0" prefWidth="657.0">
+                     <children>
+                        <TableView fx:id="repasTable" layoutX="61.0" layoutY="57.0" prefHeight="193.0" prefWidth="224.0">
+                          <columns>
+                            <TableColumn fx:id="repasidClm" prefWidth="75.0" text="id" visible="false" />
+                            <TableColumn fx:id="repasNomClm" prefWidth="145.0" text="nom" />
+                          </columns>
+                        </TableView>
+                        <Button fx:id="choisirRepaBtn" layoutX="348.0" layoutY="141.0" mnemonicParsing="false" onAction="#choisirRepaBtnClicked" text="Choisir" />
+                     </children>
+                  </AnchorPane>
+            </content>
+            </Tab>
+          <Tab fx:id="ingredTab" text="Choisir les ingrédients et les suppléments">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
